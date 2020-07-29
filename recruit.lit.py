@@ -1,21 +1,40 @@
 import streamlit as st 
 
 print = st.write
+from recruit import Recruit
 
-import recruit
-import cv2
-import imutils
 
-r = recruit.Recruit(r'Screenshot_20200501-103732.png')
-st.image(r.img, use_column_width=True, channels='BGR')
-st.image(r.gray, caption='BW IMG',use_column_width=True)
+tags = {'Caster', 'Starter', 'Medic', 'Ranged', 'Guard'}
+df = Recruit.find_operators(tags)
+df[['name', 'inter', 'rank', 'length']]
 
-# for i in r.detect_rects():
-# 	st.image(i)
-# 	text = r.detect_text(i)
-# 	st.write(text)
 
-st.write(r.get_tags())
+# def get_intersecting_operator(tags):
+
+# st.write(n)
+# st.write([df.tags.isin((tags))])
+
+
+# r = recruit.Recruit(r'Screenshot_20200501-103732.png')
+# st.image(r.img, use_column_width=True, channels='BGR')
+# st.image(r.gray, caption='BW IMG',use_column_width=True)
+
+# # for i in r.detect_rects():
+# # 	st.image(i)
+# # 	text = r.detect_text(i)
+# # 	st.write(text)
+
+
+# tags = r.get_tags()
+
+# st.write(tags)
+# st.write(recruit.csv)
+# st.write(recruit.csv[['Name', 'Rank']])
+# st.write(df.loc[df['2nd']=='Melee'])
+
+# '1st',
+	# '2nd', 
+	# '3rd',
 
 # def detect_text_boxs(img):
 # 	arr = []

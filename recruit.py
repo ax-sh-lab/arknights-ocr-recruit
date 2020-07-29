@@ -7,17 +7,45 @@ import imutils
 
 rx = re.compile(r'[A-Z][a-z]+')
 
-csv = pd.read_csv(r'./RecruitmentTags.csv', header=None, names=[
-	'Name',
-	'Rank',
+all_tags_col = [	
 	'1st',
 	'2nd', 
 	'3rd',
+	'4th',
+	'5th']
+csv = pd.read_csv(r'./RecruitmentTags.csv', header=None, names=[
+	'name',
+	'rank',
+	'1st',
+	'2nd', 
+	'3rd',
+	'4th',
+	'5th',
 	'type'
 	])
+csv = csv.where(pd.notnull(csv), None)
+csv['tags'] = csv[all_tags_col].values.tolist()
 
 class Recruit(object):
 	TESSERACT_CONFIG = ("-l eng --oem 1 --psm 7")
+	@staticmethod
+	def all_recruitment_tags():
+		return csv
+	@classmethod
+	def find_operators(cls, tags, mini=True):
+		df = cls.all_recruitment_tags()
+		def filter(x):
+			i = tags.intersection(set(x))
+			return list(i) if len(i) else None
+		df['inter'] = df.tags.apply(filter)
+		df['length'] = df['inter'].str.len()
+		df = df.sort_values(['length', 'rank'], ascending=False)
+		df = df[df.inter.notnull()]
+		if mini:
+			df = df[[i for i in df.columns if i not in all_tags_col]]
+
+		return df
+
 	def __init__(self, img):
 		self.img = cv2.imread(img)
 		self.gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
