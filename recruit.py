@@ -47,7 +47,7 @@ class Recruit(object):
 		return df
 
 	def __init__(self, img):
-		self.img = cv2.imread(img)
+		self.img = cv2.imread(img) if isinstance(img, str) else img
 		self.gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
 
 	def image_to_string(self, img):
